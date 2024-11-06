@@ -29,13 +29,9 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $location = null;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\ManyToOne(inversedBy: 'createdEvents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $createdBy = null;
-
-    #[ORM\ManyToOne(inversedBy: 'participatedEvents')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $participants = null;
 
     public function getId(): ?int
     {
@@ -114,15 +110,4 @@ class Event
         return $this;
     }
 
-    public function getParticipants(): ?User
-    {
-        return $this->participants;
-    }
-
-    public function setParticipants(?User $participants): static
-    {
-        $this->participants = $participants;
-
-        return $this;
-    }
 }
