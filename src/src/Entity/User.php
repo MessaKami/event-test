@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'createdBy')]
+    private Collection $createdEvents;
+
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'participants')]
+    private Collection $participatedEvents;
+
+    public function __construct()
+    {
+        $this->createdEvents = new ArrayCollection();
+        $this->participatedEvents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -118,6 +138,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->createdEvents;
+    }
+
+    public function addCreatedEvent(Event $event): static
+    {
+        if (!$this->createdEvents->contains($event)) {
+            $this->createdEvents->add($event);
+            $event->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedEvent(Event $event): static
+    {
+        if ($this->createdEvents->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getCreatedBy() === $this) {
+                $event->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getParticipatedEvents(): Collection
+    {
+        return $this->participatedEvents;
+    }
+
+    public function addParticipatedEvent(Event $participatedEvent): static
+    {
+        if (!$this->participatedEvents->contains($participatedEvent)) {
+            $this->participatedEvents->add($participatedEvent);
+            $participatedEvent->setParticipants($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipatedEvent(Event $participatedEvent): static
+    {
+        if ($this->participatedEvents->removeElement($participatedEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($participatedEvent->getParticipants() === $this) {
+                $participatedEvent->setParticipants(null);
+            }
+        }
 
         return $this;
     }
