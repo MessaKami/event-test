@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,13 +31,20 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $location = null;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\ManyToOne(inversedBy: 'createdEvents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $createdBy = null;
 
-    #[ORM\ManyToOne(inversedBy: 'participatedEvents')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $participants = null;
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'participatedEvents')]
+    private Collection $participants;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,15 +123,28 @@ class Event
         return $this;
     }
 
-    public function getParticipants(): ?User
+    /**
+     * @return Collection<int, User>
+     */
+    public function getParticipants(): Collection
     {
         return $this->participants;
     }
 
-    public function setParticipants(?User $participants): static
+    public function addParticipant(User $participant): static
     {
-        $this->participants = $participants;
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+        }
 
         return $this;
     }
+
+    public function removeParticipant(User $participant): static
+    {
+        $this->participants->removeElement($participant);
+
+        return $this;
+    }
+
 }
