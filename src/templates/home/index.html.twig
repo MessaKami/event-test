@@ -41,6 +41,10 @@
                             <p class="card-text">{{ event.description|slice(0, 100) }}...</p>
                             <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
                             <p class="card-text"><strong>Date:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
+                            <!-- Affichage du bouton "Edit" uniquement pour le créateur de l'événement -->
+                            {% if app.user == event.createdBy %}
+                                <a href="{{ path('app_event_edit', { id: event.id }) }}" class="btn btn-outline-secondary">Edit</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
