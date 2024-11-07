@@ -3,25 +3,24 @@
 namespace App\Controller;
 
 use App\Repository\EventRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'app_home')]
     public function index(EventRepository $eventRepository, Request $request): Response
     {
-        // Récupération des filtres de date depuis la requête
+        // Récupérer les filtres de date depuis la requête
         $startDate = $request->query->get('start_date');
         $endDate = $request->query->get('end_date');
 
+        // Filtrer les événements en fonction des dates fournies ou récupérer tous les événements à venir
         if ($startDate && $endDate) {
-            // Si des dates sont fournies, filtrer les événements dans cet intervalle
             $events = $eventRepository->findEventsByDateRange(new \DateTime($startDate), new \DateTime($endDate));
         } else {
-            // Sinon, récupérer tous les événements à venir
             $events = $eventRepository->findUpcomingEvents();
         }
 
