@@ -11,7 +11,15 @@
         <p><strong>Start Date:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
         <p><strong>End Date:</strong> {{ event.endDate|date('d-m-Y H:i') }}</p>
 
-        <!-- Bouton de retour à la page d'accueil -->
+        <!-- Bouton d'inscription ou de désinscription -->
+        {% if app.user %}
+            {% if event.participants.contains(app.user) %}
+                <a href="{{ path('app_event_unsubscribe', { id: event.id }) }}" class="btn btn-danger">Unsubscribe</a>
+            {% else %}
+                <a href="{{ path('app_event_subscribe', { id: event.id }) }}" class="btn btn-success">Subscribe</a>
+            {% endif %}
+        {% endif %}
+
         <div class="text-center mt-4">
             <a href="{{ path('app_home') }}" class="btn btn-secondary">Back to Events</a>
         </div>

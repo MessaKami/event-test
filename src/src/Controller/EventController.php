@@ -83,4 +83,40 @@ class EventController extends AbstractController
             'event' => $event,
         ]);
     }
+
+    #[Route('/event/{id}/subscribe', name: 'app_event_subscribe')]
+    #[IsGranted("ROLE_USER")]
+    public function subscribe(Event $event, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$event->isParticipant($user)) {
+            $event->addParticipant($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'You are now subscribed to the event.');
+        } else {
+            $this->addFlash('warning', 'You are already subscribed to this event.');
+        }
+
+        return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+    }
+
+    #[Route('/event/{id}/unsubscribe', name: 'app_event_unsubscribe')]
+    #[IsGranted("ROLE_USER")]
+    public function unsubscribe(Event $event, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        if ($event->isParticipant($user)) {
+            $event->removeParticipant($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'You have unsubscribed from the event.');
+        } else {
+            $this->addFlash('warning', 'You are not subscribed to this event.');
+        }
+
+        return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+    }
+
+
 }

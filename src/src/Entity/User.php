@@ -150,7 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Event>
      */
-    public function getEvents(): Collection
+    public function getCreatedEvents(): Collection
     {
         return $this->createdEvents;
     }

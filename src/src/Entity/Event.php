@@ -147,4 +147,12 @@ class Event
         return $this;
     }
 
+    /**
+     * Vérifie si un utilisateur est inscrit à l'événement
+     */
+    public function isParticipant(User $user): bool
+    {
+        return $this->participants->contains($user);
+    }
+
 }
