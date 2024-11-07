@@ -58,4 +58,21 @@ class EventController extends AbstractController
             'event' => $event,
         ]);
     }
+
+    #[Route('/event/{id}/delete', name: 'app_event_delete', methods: ['POST'])]
+    #[IsGranted("ROLE_USER")]
+    public function delete(Event $event, EntityManagerInterface $entityManager): Response
+    {
+        // Vérifie que l'utilisateur est le créateur de l'événement
+        if ($event->getCreatedBy() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $entityManager->remove($event);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Event deleted successfully!');
+
+        return $this->redirectToRoute('app_home');
+    }
 }
