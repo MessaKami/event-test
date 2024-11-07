@@ -13,8 +13,17 @@ class HomeController extends AbstractController
     #[Route('/home', name: 'app_home')]
     public function index(EventRepository $eventRepository, Request $request): Response
     {
-        // Récupération des événements à venir triés par date de début
-        $events = $eventRepository->findUpcomingEvents();
+        // Récupération des filtres de date depuis la requête
+        $startDate = $request->query->get('start_date');
+        $endDate = $request->query->get('end_date');
+
+        if ($startDate && $endDate) {
+            // Si des dates sont fournies, filtrer les événements dans cet intervalle
+            $events = $eventRepository->findEventsByDateRange(new \DateTime($startDate), new \DateTime($endDate));
+        } else {
+            // Sinon, récupérer tous les événements à venir
+            $events = $eventRepository->findUpcomingEvents();
+        }
 
         return $this->render('home/index.html.twig', [
             'events' => $events,
