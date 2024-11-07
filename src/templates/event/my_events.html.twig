@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Events{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">My Subscribed Events</h1>
+
+    {% if events is empty %}
+        <p class="text-center">You are not subscribed to any events.</p>
+    {% else %}
+        <div class="row">
+            {% for event in events %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ event.title }}</h5>
+                            <p class="card-text">{{ event.description|slice(0, 100) }}...</p>
+                            <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
+                            <p class="card-text"><strong>Date:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
+                            <a href="{{ path('app_event_show', { id: event.id }) }}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
