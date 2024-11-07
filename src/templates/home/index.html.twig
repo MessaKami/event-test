@@ -45,6 +45,9 @@
                             <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
                             <p class="card-text"><strong>Date:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
 
+                            <!-- Bouton View Details pour rediriger vers la page de détails de l'événement -->
+                            <a href="{{ path('app_event_show', { id: event.id }) }}" class="btn btn-outline-primary btn-sm mt-2">View Details</a>
+
                             <!-- Affichage des boutons Edit et Delete uniquement pour le créateur de l'événement -->
                             {% if app.user == event.createdBy %}
                                 <div class="mt-auto">
