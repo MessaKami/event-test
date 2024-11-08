@@ -87,3 +87,24 @@ L'application est maintenant accessible sur `http://localhost:8000`.
 
 ---
 
+## Configuration
+
+Dans le fichier `.env.local`, vous pouvez configurer plusieurs paramètres clés de l'application, notamment la base de données, les informations d'emailing (le cas échéant), et d'autres variables d'environnement.
+
+---
+
+## Utilisation
+
+1. **Création de compte** : Un utilisateur peut s'inscrire via la page de registre en fournissant un email et un mot de passe conforme aux exigences de sécurité (au moins 8 caractères, une majuscule, un chiffre, et un caractère spécial).
+2. **Connexion** : Une fois inscrit, l'utilisateur peut se connecter pour accéder aux fonctionnalités avancées.
+3. **Gestion des événements** :
+   - **Créer un événement** : L'utilisateur peut créer un nouvel événement en spécifiant le titre, la description, les dates de début et de fin, ainsi que le lieu.
+   - **Modifier un événement** : Un utilisateur peut modifier les événements qu'il a créés.
+   - **Supprimer un événement** : Un utilisateur peut supprimer ses propres événements.
+4. **Inscription aux événements** : Tout utilisateur connecté peut s'inscrire aux événements créés par d'autres.
+5. **Mes événements** : L'utilisateur peut consulter la liste des événements auxquels il est inscrit en allant dans la section "Mes événements".
+
+---
+
+
+
