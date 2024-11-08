@@ -18,12 +18,14 @@
 
     <!-- Formulaire de filtre par intervalle de dates -->
     <form method="get" class="mb-4">
-        <div class="row">
+        <div class="row align-items-end">
             <div class="col-md-5">
-                <input type="date" name="start_date" class="form-control" value="{{ app.request.query.get('start_date') }}" placeholder="Start Date">
+                <label for="start_date">Start Date</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ app.request.query.get('start_date') }}" placeholder="Date de début">
             </div>
             <div class="col-md-5">
-                <input type="date" name="end_date" class="form-control" value="{{ app.request.query.get('end_date') }}" placeholder="End Date">
+                <label for="end_date">End Date</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ app.request.query.get('end_date') }}" placeholder="Date de fin">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">Filter</button>
