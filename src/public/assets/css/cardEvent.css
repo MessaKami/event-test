@@ -1,0 +1,16 @@
+.card {
+    min-height: 300px; /* Ajuste cette hauteur selon le contenu */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-text.flex-grow-1 {
+    flex-grow: 1; /* Remplit l'espace disponible */
+}
+
+.card .mt-auto {
+    margin-top: auto; /* Positionne les boutons en bas de la carte */
+}
