@@ -45,7 +45,8 @@
                             <h5 class="card-title">{{ event.title }}</h5>
                             <p class="card-text flex-grow-1">{{ event.description|slice(0, 100) }}...</p>
                             <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
-                            <p class="card-text"><strong>Date:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
+                            <p class="card-text"><strong>Date de début:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
+                            <p class="card-text"><strong>Date de fin:</strong> {{ event.endDate|date('d-m-Y H:i') }}</p>
 
                             <!-- Bouton View Details pour rediriger vers la page de détails de l'événement -->
                             <a href="{{ path('app_event_show', { id: event.id }) }}" class="btn btn-outline-primary btn-sm mt-2">View Details</a>
