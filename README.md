@@ -134,5 +134,135 @@ Dans le fichier `.env.local`, vous pouvez configurer plusieurs paramètres clés
 
 ---
 
+```markdown
+# Event Management Application
 
+Bienvenue dans l'application de gestion d'événements pour une organisation régionale. Cette application, développée avec Symfony, permet aux utilisateurs de créer, modifier, supprimer et s'inscrire à des événements. Elle propose également une page d'accueil publique avec affichage des événements à venir, un filtre par date, et des fonctionnalités réservées aux utilisateurs authentifiés.
+
+## Fonctionnalités Principales
+
+1. **Authentification et Gestion des Accès**
+   - Inscription avec vérification d'e-mail.
+   - Connexion et déconnexion.
+   - Accès aux fonctionnalités avancées (création, modification, suppression d'événements) uniquement pour les utilisateurs connectés.
+
+2. **Gestion des Événements**
+   - Création, modification et suppression d'événements pour les utilisateurs connectés.
+   - Inscription et désinscription aux événements, avec vérification pour éviter les inscriptions en double.
+   - Affichage de tous les événements à venir sur la page d'accueil, accessible même aux visiteurs.
+   - Filtrage des événements par date de début et de fin.
+
+3. **Mes Événements**
+   - Section dédiée pour afficher uniquement les événements auxquels l'utilisateur est inscrit.
+
+4. **Tests Unitaires**
+   - Tests unitaires avec PHPUnit pour vérifier le bon fonctionnement des services et des méthodes principales de l'application.
+
+## Installation
+
+### Prérequis
+
+- PHP 8.0 ou supérieur
+- Composer
+- Symfony CLI (optionnel mais recommandé)
+- MySQL ou autre base de données compatible avec Doctrine
+
+### Étapes d'Installation
+
+1. **Cloner le dépôt Git**
+   ```bash
+   git clone https://github.com/votre_utilisateur/votre_projet.git
+   cd votre_projet
+   ```
+
+2. **Installer les dépendances**
+   ```bash
+   composer install
+   ```
+
+3. **Configurer les variables d'environnement**
+   - Copier le fichier `.env` et renommer la copie en `.env.local`.
+   - Configurer les informations de la base de données dans `.env.local` :
+     ```
+     DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
+     ```
+
+4. **Exécuter les migrations de base de données**
+   ```bash
+   php bin/console doctrine:database:create
+   php bin/console doctrine:migrations:migrate
+   ```
+
+5. **Charger les fixtures de base**
+   - Cette étape créera des comptes utilisateurs et des événements d'exemple.
+   ```bash
+   php bin/console doctrine:fixtures:load
+   ```
+
+6. **Compiler les assets (si nécessaire)**
+   - Utilisez Webpack Encore si des assets (CSS, JS) doivent être compilés.
+
+7. **Lancer le serveur de développement**
+   ```bash
+   symfony serve
+   ```
+   Accédez à l'application via `http://127.0.0.1:8000`.
+
+## Utilisation
+
+### Accéder à l'Application
+
+1. **Page d'accueil** - Affiche les événements à venir et permet de les filtrer par date.
+2. **Inscription / Connexion** - Accès via les liens en haut de la page. Nécessaire pour accéder aux fonctionnalités avancées.
+3. **Création d'événements** - Accessible une fois connecté.
+4. **Mes événements** - Section pour voir les événements auxquels l'utilisateur est inscrit.
+
+### Rôles Utilisateurs
+
+- **Visiteurs** : Peuvent voir les événements mais pas interagir avec eux.
+- **Utilisateurs authentifiés** : Peuvent créer, modifier, supprimer leurs propres événements, et s'inscrire/désinscrire aux événements d'autres utilisateurs.
+
+## Choix de Conception
+
+- **Architecture MVC avec Symfony** - Utilisation du framework Symfony pour une structure MVC robuste et respectueuse des meilleures pratiques.
+- **Système de sécurité Symfony** - Pour la gestion de l'authentification et des rôles.
+- **Bootstrap pour le style** - Utilisation de Bootstrap pour un design responsive.
+- **Faker pour les Fixtures** - Utilisation de la bibliothèque Faker pour générer des données d'exemple dans les fixtures.
+- **PHPUnit pour les Tests** - Tests unitaires pour s'assurer du bon fonctionnement des principales fonctionnalités de l'application.
+
+## Limitations Connues
+
+- **Filtrage de dates** : Les événements filtrés se basent sur les dates de début et de fin. Veillez à inclure une marge d'un jour dans la date de fin si vous voulez inclure les événements qui se terminent ce jour-là.
+- **Pas de gestion des rôles avancés** : Tous les utilisateurs connectés ont les mêmes droits pour créer et gérer leurs propres événements.
+
+## Instructions pour le Déploiement en Production
+
+1. **Préparer une branche de release**
+   ```bash
+   git checkout develop
+   git flow release start 1.0.0
+   ```
+   
+2. **Finaliser la release**
+   ```bash
+   git flow release finish 1.0.0
+   git push origin main --tags
+   ```
+
+3. **Installer les dépendances en production**
+   ```bash
+   composer install --no-dev --optimize-autoloader
+   ```
+
+4. **Migrer la base de données**
+   ```bash
+   php bin/console doctrine:migrations:migrate --env=prod
+   ```
+
+5. **Effacer le cache en production**
+   ```bash
+   php bin/console cache:clear --env=prod
+   ```
+
+6. **Redémarrer le serveur (si nécessaire)**
 
