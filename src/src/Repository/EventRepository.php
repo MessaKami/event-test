@@ -34,6 +34,9 @@ class EventRepository extends ServiceEntityRepository
      */
     public function findEventsByDateRange(\DateTime $startDate, \DateTime $endDate): array
     {
+        // Ajouter 23 heures, 59 minutes, et 59 secondes à la date de fin
+        $endDate->setTime(23, 59, 59);
+        
         return $this->createQueryBuilder('e')
             ->where('e.startDate >= :startDate')
             ->andWhere('e.endDate <= :endDate')
