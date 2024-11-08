@@ -90,12 +90,12 @@ class EventController extends AbstractController
     {
         $user = $this->getUser();
 
-        if (!$event->isParticipant($user)) {
+        if ($event->isParticipant($user)) {
+            $this->addFlash('warning', 'You are already subscribed to this event.');
+        } else {
             $event->addParticipant($user);
             $entityManager->flush();
-            $this->addFlash('success', 'You are now subscribed to the event.');
-        } else {
-            $this->addFlash('warning', 'You are already subscribed to this event.');
+            $this->addFlash('success', 'You have successfully subscribed to the event!');
         }
 
         return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
