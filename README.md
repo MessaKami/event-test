@@ -106,5 +106,33 @@ Dans le fichier `.env.local`, vous pouvez configurer plusieurs paramètres clés
 
 ---
 
+## Choix de conception
+
+1. **Architecture MVC de Symfony** : Utilisation de Symfony pour une séparation claire des responsabilités.
+2. **Composant Security de Symfony** : Gère l'authentification et la protection des routes pour sécuriser l'accès aux fonctionnalités sensibles.
+3. **Flashes pour les notifications** : Affichage des messages de confirmation ou d'erreur après chaque action utilisateur.
+4. **Fixtures avec Faker** : Permet de générer des données fictives pour simuler des utilisateurs et des événements, facilitant ainsi les tests et la démonstration.
+5. **Utilisation de Bootstrap pour le style** : Améliore l'esthétique de l'application et assure la compatibilité avec des dispositifs de différentes tailles (responsive design).
+
+---
+
+## Limitations
+
+1. **Pas de pagination** : Les événements sont affichés sans pagination. Pour un grand nombre d'événements, la performance pourrait être impactée.
+2. **Pas de gestion avancée des notifications** : Les messages flash sont basiques et n'incluent pas de notifications en temps réel.
+3. **Filtrage des événements** : Le filtrage des événements est limité à l'intervalle de date sans critères supplémentaires (lieu, créateur, etc.).
+
+---
+
+## Technologies utilisées
+
+- **Symfony 7.1** : Framework principal de l'application.
+- **Doctrine ORM** : Gère la persistance des données pour les entités utilisateur et événement.
+- **Bootstrap 5** : Assure la mise en forme et le design responsive de l'application.
+- **FakerPHP** : Génère des données de test pour les fixtures.
+- **Twig** : Moteur de templates utilisé pour afficher les vues.
+
+---
+
 
 
