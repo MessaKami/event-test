@@ -18,12 +18,14 @@
 
     <!-- Formulaire de filtre par intervalle de dates -->
     <form method="get" class="mb-4">
-        <div class="row">
+        <div class="row align-items-end">
             <div class="col-md-5">
-                <input type="date" name="start_date" class="form-control" value="{{ app.request.query.get('start_date') }}" placeholder="Start Date">
+                <label for="start_date">Start Date</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ app.request.query.get('start_date') }}" placeholder="Date de début">
             </div>
             <div class="col-md-5">
-                <input type="date" name="end_date" class="form-control" value="{{ app.request.query.get('end_date') }}" placeholder="End Date">
+                <label for="end_date">End Date</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ app.request.query.get('end_date') }}" placeholder="Date de fin">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">Filter</button>
@@ -43,7 +45,8 @@
                             <h5 class="card-title">{{ event.title }}</h5>
                             <p class="card-text flex-grow-1">{{ event.description|slice(0, 100) }}...</p>
                             <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
-                            <p class="card-text"><strong>Date:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
+                            <p class="card-text"><strong>Date de début:</strong> {{ event.startDate|date('d-m-Y H:i') }}</p>
+                            <p class="card-text"><strong>Date de fin:</strong> {{ event.endDate|date('d-m-Y H:i') }}</p>
 
                             <!-- Bouton View Details pour rediriger vers la page de détails de l'événement -->
                             <a href="{{ path('app_event_show', { id: event.id }) }}" class="btn btn-outline-primary btn-sm mt-2">View Details</a>
