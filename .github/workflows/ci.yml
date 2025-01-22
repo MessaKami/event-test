@@ -1,0 +1,55 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_pgsql, intl, zip
+          
+      - name: Copy .env.prod
+        run: php -r "file_exists('.env.prod') || copy('.env.prod.dist', '.env.prod');"
+        
+      - name: Install dependencies
+        run: |
+          cd src
+          composer install --prefer-dist --no-progress --no-suggest --no-dev
+          
+      - name: Clear cache
+        run: |
+          cd src
+          php bin/console cache:clear --env=prod
+          php bin/console cache:warmup --env=prod
+
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /var/www/html
+            git pull origin main
+            
+            # Arrêt des conteneurs
+            docker compose down
+            
+            # Reconstruction et démarrage des conteneurs
+            docker compose up -d --build
+            
+            # Mise à jour de la base de données
+            docker compose exec -T php php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+            
+            # Nettoyage
+            docker system prune -f
